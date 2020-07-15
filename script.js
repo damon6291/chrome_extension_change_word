@@ -1,45 +1,14 @@
-// var text = 'coronavirus';
-
-// function replaceText(element) {
-//   if (element.hasChildNodes()) {
-//     element.childNodes.forEach(replaceText);
-//   } else if (element.nodeType === 3) {
-//     if (element.textContent.match(/coronavirus|damon/gi)) {
-//       const newElement = document.createElement('span');
-//       newElement.innerHTML = element.textContent.replace(
-//         /coronavirus|damon/gi,
-//         '<span class="rainbow">' + text + '</span>'
-//       );
-//       element.replaceWith(newElement);
-//     }
-//     // element.textContent = element.textContent.replace(/coronavirus/gi, 'Damon');
-//   }
-// }
-
-// chrome.storage.sync.get('virus', function (result) {
-//   var v = result['virus'];
-//   if (v === 1) {
-//     text = 'Damon';
-//     replaceText(document.body);
-//   } else if (v === 2) {
-//     text = 'Coronavirus';
-//     replaceText(document.body);
-//   }
-// });
-
 var from;
 var to;
 
-chrome.storage.sync.get('from', function (result) {
-  from = result['from'];
-});
-chrome.storage.sync.get('to', function (result) {
-  to = result['to'];
-});
+setFromTo();
 
-if (from.length >= 1) {
-  replaceText(document.body);
-}
+setTimeout(function () {
+  if (typeof from !== 'undefined') {
+    replaceText(document.body);
+    makeNull();
+  }
+}, 100);
 
 function replaceText(element) {
   if (element.hasChildNodes()) {
@@ -56,4 +25,20 @@ function replaceText(element) {
     }
     // element.textContent = element.textContent.replace(/coronavirus/gi, 'Damon');
   }
+}
+
+function makeNull() {
+  chrome.storage.sync.set({from: null}, function () {});
+  chrome.storage.sync.set({to: null}, function () {});
+  from = undefined;
+  to = undefined;
+}
+
+function setFromTo() {
+  chrome.storage.sync.get('from', function (result) {
+    from = result['from'];
+  });
+  chrome.storage.sync.get('to', function (result) {
+    to = result['to'];
+  });
 }

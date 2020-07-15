@@ -3,8 +3,8 @@ let to_word = document.getElementById('to');
 let button_word = document.getElementById('submit');
 
 button_word.onclick = function () {
-  let from_value = from.value;
-  let to_value = to.value;
+  let from_value = from_word.value;
+  let to_value = to_word.value;
 
   chrome.storage.sync.set({from: from_value}, function () {
     console.log(from_value);
